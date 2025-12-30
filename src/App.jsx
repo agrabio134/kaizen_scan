@@ -477,63 +477,153 @@ function App() {
     }
   });
 
-  const initCharts = () => {
+    const initCharts = () => {
     const neon = '#0f0';
     const darkGreen = '#008800';
     const glowFill = 'rgba(0, 255, 0, 0.2)';
 
+    // PRICE HISTORY (OHLC - High/Low/Close)
     if (canvasRefs.ohlc.current) {
       chartsRef.current.ohlc = new Chart(canvasRefs.ohlc.current.getContext('2d'), {
         type: 'line',
         data: {
           labels: [],
           datasets: [
-            { label: 'High', data: [], borderColor: neon, backgroundColor: glowFill, borderWidth: 2, tension: 0.3, pointRadius: 0, fill: false },
-            { label: 'Low', data: [], borderColor: darkGreen, backgroundColor: 'rgba(0, 136, 0, 0.1)', borderWidth: 2, tension: 0.3, pointRadius: 0, fill: false },
-            { label: 'Close', data: [], borderColor: neon, backgroundColor: glowFill, borderWidth: 4, tension: 0.3, pointRadius: 0, fill: false }
+            {
+              label: 'High',
+              data: [],
+              borderColor: neon,
+              backgroundColor: glowFill,
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Low',
+              data: [],
+              borderColor: darkGreen,
+              backgroundColor: 'rgba(0, 136, 0, 0.1)',
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Close',
+              data: [],
+              borderColor: neon,
+              backgroundColor: glowFill,
+              borderWidth: 4,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: false
+            }
           ]
         },
         options: defaultOptions('Price (USD)')
       });
     }
 
+    // VOLUME HISTORY
     if (canvasRefs.volume.current) {
       chartsRef.current.volume = new Chart(canvasRefs.volume.current.getContext('2d'), {
         type: 'bar',
-        data: { labels: [], datasets: [{ label: 'Volume', data: [], backgroundColor: 'rgba(0, 255, 0, 0.4)', borderColor: neon, borderWidth: 1 }] },
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Volume',
+              data: [],
+              backgroundColor: 'rgba(0, 255, 0, 0.4)',
+              borderColor: neon,
+              borderWidth: 1
+            }
+          ]
+        },
         options: {
           ...defaultOptions('Volume (USD)'),
           scales: {
             ...defaultOptions().scales,
             y: {
               ...defaultOptions().scales.y,
-              ticks: { color: '#0f0', callback: function(value) { return fmtUSD(value); } }
+              ticks: {
+                color: '#0f0',
+                callback: function(value) {
+                  return fmtUSD(value);
+                }
+              }
             }
           }
         }
       });
     }
 
+    // TAKER BUY/SELL RATIO
     if (canvasRefs.buySell.current) {
       chartsRef.current.buySell = new Chart(canvasRefs.buySell.current.getContext('2d'), {
         type: 'line',
-        data: { labels: [], datasets: [{ label: 'Taker Buy/Sell Ratio', data: [], borderColor: neon, backgroundColor: glowFill, borderWidth: 4, tension: 0.3, pointRadius: 0, fill: true }] },
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Taker Buy/Sell Ratio',
+              data: [],
+              borderColor: neon,
+              backgroundColor: glowFill,
+              borderWidth: 4,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: true
+            }
+          ]
+        },
         options: defaultOptions('Ratio')
       });
     }
 
+    // FEAR & GREED INDEX
     if (canvasRefs.fg.current) {
       chartsRef.current.fg = new Chart(canvasRefs.fg.current.getContext('2d'), {
         type: 'line',
-        data: { labels: [], datasets: [{ label: 'Fear & Greed Index', data: [], borderColor: neon, backgroundColor: glowFill, borderWidth: 4, tension: 0.3, pointRadius: 0, fill: true }] },
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Fear & Greed Index',
+              data: [],
+              borderColor: neon,
+              backgroundColor: glowFill,
+              borderWidth: 4,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: true
+            }
+          ]
+        },
         options: defaultOptions('Index (0-100)')
       });
     }
 
+    // FUNDING RATE HISTORY
     if (canvasRefs.funding.current) {
       chartsRef.current.funding = new Chart(canvasRefs.funding.current.getContext('2d'), {
         type: 'line',
-        data: { labels: [], datasets: [{ label: 'Funding Rate (%)', data: [], borderColor: neon, backgroundColor: glowFill, borderWidth: 4, tension: 0.3, pointRadius: 0, fill: true }] },
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Funding Rate (%)',
+              data: [],
+              borderColor: neon,
+              backgroundColor: glowFill,
+              borderWidth: 4,
+              tension: 0.3,
+              pointRadius: 0,
+              fill: true
+            }
+          ]
+        },
         options: defaultOptions('Funding Rate (%)')
       });
     }
@@ -581,7 +671,7 @@ function App() {
         priceChange7d: { value: priceChange7d }
       });
 
-      // Update charts
+      // Render charts
       if (ohlc && chartsRef.current.ohlc) {
         const labels = ohlc.map(r => new Date(r[0]));
         chartsRef.current.ohlc.data.labels = labels;
@@ -682,7 +772,7 @@ function App() {
             </div>
 
             <div className="controls-section">
-              <div className="token-selector">
+                            <div className="token-selector">
                 <button className="token-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
                   <span>{currentToken.symbol}</span>
                   <ChevronDown size={16} />
@@ -690,7 +780,10 @@ function App() {
 
                 {dropdownOpen && (
                   <>
-                    <div className="dropdown-backdrop" onClick={() => setDropdownOpen(false)} />
+                    <div
+                      className="dropdown-backdrop"
+                      onClick={() => setDropdownOpen(false)}
+                    />
                     <div className="dropdown">
                       <div className="dropdown-search">
                         <Search size={16} />
@@ -704,9 +797,11 @@ function App() {
                       </div>
                       <div className="dropdown-list">
                         {searching && <div className="dropdown-loading">Searching...</div>}
+                        
                         {!searching && displayTokens.length === 0 && searchQuery.length > 1 && (
                           <div className="dropdown-empty">No tokens found</div>
                         )}
+                        
                         {!searching && displayTokens.map(token => (
                           <button
                             key={token.id}
@@ -757,7 +852,7 @@ function App() {
                   <div className="signal-score">SCORE: {signal.score}</div>
                   <div className="signal-reasons">
                     {signal.signals.map((s, i) => (
-                      <div key={i} className="signal-reason">{s}</div>
+                      <div key={i} className="signal-reason"> {s}</div>
                     ))}
                   </div>
                 </div>
