@@ -623,7 +623,7 @@ body {
   z-index: 1001; /* Above dropdown and backdrop */
 }
 
-.token-btn, 
+.token-btn,
 .refresh-btn,
 .ca-copy-btn {
   position: relative;
